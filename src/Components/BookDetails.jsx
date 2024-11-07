@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { ReadContext } from './Root';
+import { ReadContext, WishlistContext } from './Root';
 import { useLoaderData, useParams } from 'react-router-dom';
 
 const BookDetails = () => {
@@ -12,6 +12,8 @@ const BookDetails = () => {
     const { bookName, author, category, review, rating, tags, image, totalPages, publisher, yearOfPublishing } = book;
 
     const { reads, setReads } = useContext(ReadContext);
+    const {wishlist, setWishlist} = useContext(WishlistContext);
+    
     const handleMarkAsRead = () => {
         if (reads.find((read) => read.bookId === id)) {
             alert('Already marked as read');
@@ -19,6 +21,14 @@ const BookDetails = () => {
         }
         setReads([...reads, book]);
 
+    }
+
+    const handleAddToWishlist = () => {
+        if (wishlist.find((wish) => wish.bookId === id)) {
+            alert('Already added to wishlist');
+            return;
+        }
+        setWishlist([...wishlist, book]);
     }
     // console.log(reads.length);
 
@@ -57,8 +67,8 @@ const BookDetails = () => {
                 </div>
 
                 <div className="flex gap-3">
-                    <button onClick={handleMarkAsRead} className="btn  rounded-lg border border-[#131313]/30 bg-white ">Read</button>
-                    <button className="btn btn-accent text-white bg-[#50b1c9]">Wishlist</button>
+                    <button onClick={handleMarkAsRead} className="btn  rounded-lg border border-[#131313]/30 bg-white ">Read ({reads.length})</button>
+                    <button onClick={handleAddToWishlist} className="btn btn-accent text-white bg-[#50b1c9]">Wishlist ({wishlist.length})</button>
                 </div>
 
             </div>
